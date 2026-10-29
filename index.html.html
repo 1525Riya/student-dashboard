@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentHub | Student Dashboard</title>
+
+    <style>
+        :root {
+            --bg: #f7f7fc;
+            --white: #ffffff;
+            --dark: #171629;
+            --purple: #8056e8;
+            --light-purple: #eee8ff;
+            --text: #29283b;
+            --muted: #88879b;
+            --border: #eceaf4;
+            --green: #20966a;
+            --orange: #e99b37;
+            --red: #d95370;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 25px;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            background: var(--dark);
+            color: white;
+            padding: 28px 18px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            padding: 0 12px 35px;
+            letter-spacing: -0.7px;
+        }
+
+        .brand span {
+            color: #b9a1ff;
+        }
+
+        .menu-label {
+            color: #9995b2;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            padding: 0 12px;
+            margin: 12px 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 10px;
+            margin: 5px 0;
+            color: #c7c4d9;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--purple);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-note {
+            margin-top: 35px;
+            padding: 17px;
+            background: #292641;
+            border-radius: 13px;
+        }
+
+        .sidebar-note h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-note p {
+            font-size: 12px;
+            color: #c4bfdc;
+            line-height: 1.7;
+        }
+
+        /* MAIN AREA */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 78px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-title {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+        }
+
+        .search-box input {
+            width: 220px;
+            padding: 11px 14px;
+            background: #f8f7fc;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--purple);
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--light-purple);
+            color: var(--purple);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+        }
+
+        .content {
+            padding: 32px 35px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .welcome {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            font-size: clamp(23px, 3vw, 30px);
+            margin-bottom: 9px;
+            letter-spacing: -0.6px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .date-chip {
+            padding:12px 15px;
+            background:white;
+            border:1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            padding: 22px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            min-width: 0;
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 19px;
+        }
+
+        .stat-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+        }
+
+        .purple-bg { background: #eee7ff; }
+        .green-bg { background: #e2f7ed; }
+        .orange-bg { background: #fff1dd; }
+        .blue-bg { background: #e2f0ff; }
+
+        .stat-card h2 {
+            font-size: 29px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .stat-small {
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* GENERAL SECTIONS */
+
+        .section {
+            margin-bottom: 28px;
+            scroll-margin-top: 100px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 17px;
+        }
+
+        .section-heading h2 {
+            font-size: 19px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .text-link {
+            color: var(--purple);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 23px;
+            min-width: 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        /* COURSES */
+
+        .course-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .course {
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr);
+            gap: 14px;
+            align-items: start;
+        }
+
+        .course-icon {
+            height: 48px;
+            width: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-size: 22px;
+        }
+
+        .course-info h3 {
+            font-size: 14px;
+            margin: 3px 0 7px;
+        }
+
+        .course-info p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .progress-info span:last-child {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        .progress {
+            height: 7px;
+            background: #f0eef7;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--purple);
+        }
+
+        /* TIMETABLE */
+
+        .schedule-list {
+            display: grid;
+            gap: 13px;
+        }
+
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 76px 4px minmax(0, 1fr);
+            gap: 12px;
+            align-items: stretch;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .schedule-time {
+            font-size: 12px;
+            color: var(--muted);
+            align-self: center;
+            line-height: 1.6;
+        }
+
+        .schedule-line {
+            background: #a78bfa;
+            border-radius: 5px;
+        }
+
+        .schedule-item h3 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .schedule-item p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .next-class {
+            background: #f7f2ff;
+            border-color: #e6d9ff;
+        }
+
+        /* TABLES */
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 570px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 15px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        th {
+            color: var(--muted);
+            background: #faf9fd;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: #fff1dc;
+            color: #a7650a;
+        }
+
+        .completed {
+            background: #e0f7eb;
+            color: #168154;
+        }
+
+        .overdue {
+            background: #ffe5eb;
+            color: #b52b4b;
+        }
+
+        .small-btn {
+            padding: 7px 11px;
+            border: none;
+            border-radius: 7px;
+            background: var(--light-purple);
+            color: #6841c5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .small-btn:hover {
+            background: #ded0ff;
+        }
+
+        /* ATTENDANCE */
+
+        .attendance-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .attendance-score h3 {
+            font-size: 15px;
+        }
+
+        .attendance-score strong {
+            font-size: 26px;
+            color: var(--green);
+        }
+
+        .attendance-row {
+            margin: 19px 0;
+        }
+
+        .attendance-row .progress-fill {
+            background: var(--green);
+        }
+
+        .attendance-row .progress-info span:last-child {
+            color: var(--green);
+        }
+
+        .note {
+            padding: 12px;
+            background: #f4fbf7;
+            color: #347a5a;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* ANNOUNCEMENTS */
+
+        .announcement {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .announcement:first-child {
+            padding-top: 0;
+        }
+
+        .announcement:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .announcement h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .announcement p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .announcement time {
+            display: block;
+            color: var(--purple);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        /* PROFILE */
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .detail {
+            padding: 15px;
+            background: #faf9fd;
+            border-radius: 10px;
+        }
+
+        .detail p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .detail strong {
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            color: var(--muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .empty-message {
+            padding: 22px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 1150px) {
+            .sidebar {
+                width: 205px;
+            }
+
+            .main {
+                margin-left: 205px;
+                width: calc(100% - 205px);
+            }
+
+            .content {
+                padding: 25px 22px;
+            }
+
+            .topbar {
+                padding: 0 22px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                padding: 16px;
+            }
+
+            .brand {
+                padding: 0 5px 16px;
+            }
+
+            .menu-label,
+            .sidebar-note {
+                display: none;
+            }
+
+            .sidebar nav {
+                display: flex;
+                overflow-x: auto;
+                gap: 7px;
+                padding-bottom: 3px;
+            }
+
+            .nav-link {
+                flex-shrink: 0;
+                margin: 0;
+                padding: 10px 12px;
+                font-size: 12px;
+                gap: 7px;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                height: auto;
+                padding: 15px;
+                position: static;
+                flex-wrap: wrap;
+            }
+
+            .topbar-right {
+                width: 100%;
+            }
+
+            .search-box {
+                flex: 1;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .content {
+                padding: 22px 15px;
+            }
+
+            .welcome {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .stats {
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card h2 {
+                font-size: 24px;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .date-chip {
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">Student<span>Hub</span></div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav>
+            <a href="#dashboard" class="nav-link active">
+                <span class="nav-icon">⌂</span> Dashboard
+            </a>
+            <a href="#courses" class="nav-link">
+                <span class="nav-icon">▤</span> My Courses
+            </a>
+            <a href="#timetable" class="nav-link">
+                <span class="nav-icon">▦</span> Timetable
+            </a>
+            <a href="#assignments" class="nav-link">
+                <span class="nav-icon">✓</span> Assignments
+            </a>
+            <a href="#attendance" class="nav-link">
+                <span class="nav-icon">◷</span> Attendance
+            </a>
+            <a href="#announcements" class="nav-link">
+                <span class="nav-icon">♧</span> Announcements
+            </a>
+            <a href="#profile" class="nav-link">
+                <span class="nav-icon">♙</span> My Profile
+            </a>
+        </nav>
+
+        <div class="sidebar-note">
+            <h3>💡 Study Tip</h3>
+            <p>Set small daily goals, revise regularly, and keep your assignments up to date.</p>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div class="topbar-title">Student Portal</div>
+
+            <div class="topbar-right">
+                <div class="search-box">
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search assignments..."
+                        aria-label="Search assignments">
+                </div>
+
+                <div class="avatar" title="Student profile">SR</div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- DASHBOARD -->
+            <section class="section" id="dashboard">
+                <div class="welcome">
+                    <div>
+                        <h1>Welcome back, Student! 👋</h1>
+                        <p>Here's your academic overview. Keep learning and moving forward.</p>
+                    </div>
+
+                    <div class="date-chip">📅 <span id="currentDate"></span></div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <div class="stat-icon purple-bg">📚</div>
+                            <span class="stat-small">This semester</span>
+                        </div>
+                        <h2>6</h2>
+                        <p>Enrolled Courses</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <div class="stat-icon green-bg">✓</div>
+                            <span class="stat-small">Good progress</span>
+                        </div>
+                        <h2>85%</h2>
+                        <p>Overall Attendance</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <div class="stat-icon orange-bg">📝</div>
+                            <span class="stat-small">Action needed</span>
+                        </div>
+                        <h2 id="pendingCount">3</h2>
+                        <p>Pending Assignments</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <div class="stat-icon blue-bg">🏆</div>
+                            <span class="stat-small">Sample result</span>
+                        </div>
+                        <h2>8.4</h2>
+                        <p>Semester GPA</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COURSES AND TIMETABLE -->
+            <div class="two-column">
+
+                <section class="section" id="courses">
+                    <div class="section-heading">
+                        <div>
+                            <h2>My Courses</h2>
+                            <p>Your current learning progress</p>
+                        </div>
+                        <a href="#profile" class="text-link">View profile →</a>
+                    </div>
+
+                    <div class="panel">
+                        <div class="course-list">
+
+                            <div class="course">
+                                <div class="course-icon purple-bg">💻</div>
+                                <div class="course-info">
+                                    <h3>Web Development</h3>
+                                    <p>HTML, CSS and JavaScript</p>
+                                    <div class="progress-info">
+                                        <span>Course progress</span><span>75%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-fill" style="width:75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="course">
+                                <div class="course-icon green-bg">🐍</div>
+                                <div class="course-info">
+                                    <h3>Python Programming</h3>
+                                    <p>Programming and problem solving</p>
+                                    <div class="progress-info">
+                                        <span>Course progress</span><span>65%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-fill" style="width:65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="course">
+                                <div class="course-icon orange-bg">🗄️</div>
+                                <div class="course-info">
+                                    <h3>Database Management</h3>
+                                    <p>SQL, tables and database concepts</p>
+                                    <div class="progress-info">
+                                        <span>Course progress</span><span>80%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-fill" style="width:80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="course">
+                                <div class="course-icon blue-bg">⚙️</div>
+                                <div class="course-info">
+                                    <h3>Software Engineering</h3>
+                                    <p>SDLC, testing and design</p>
+                                    <div class="progress-info">
+                                        <span>Course progress</span><span>55%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-fill" style="width:55%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="timetable">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Today's Timetable</h2>
+                            <p>Example daily class schedule</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="schedule-list">
+
+                            <div class="schedule-item next-class">
+                                <div class="schedule-time">09:00 AM</div>
+                                <div class="schedule-line"></div>
+                                <div>
+                                    <h3>Web Development</h3>
+                                    <p>Lab 02 · Practical</p>
+                                </div>
+                            </div>
+
+                            <div class="schedule-item">
+                                <div class="schedule-time">10:30 AM</div>
+                                <div class="schedule-line"></div>
+                                <div>
+                                    <h3>Python Programming</h3>
+                                    <p>Room 104 · Lecture</p>
+                                </div>
+                            </div>
+
+                            <div class="schedule-item">
+                                <div class="schedule-time">12:00 PM</div>
+                                <div class="schedule-line"></div>
+                                <div>
+                                    <h3>Database Management</h3>
+                                    <p>Room 201 · Lecture</p>
+                                </div>
+                            </div>
+
+                            <div class="schedule-item">
+                                <div class="schedule-time">02:00 PM</div>
+                                <div class="schedule-line"></div>
+                                <div>
+                                    <h3>Software Engineering</h3>
+                                    <p>Room 105 · Lecture</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ASSIGNMENTS -->
+            <section class="section" id="assignments">
+                <div class="section-heading">
+                    <div>
+                        <h2>Assignments & Tasks</h2>
+                        <p>Track your academic work</p>
+                    </div>
+                    <a href="#assignments" class="text-link">Assignment tracker</a>
+                </div>
+
+                <div class="panel">
+                    <div class="table-wrap">
+                        <table id="assignmentTable">
+                            <thead>
+                                <tr>
+                                    <th>Assignment</th>
+                                    <th>Subject</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>Portfolio Website</td>
+                                    <td>Web Development</td>
+                                    <td>05 Nov 2026</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td><button class="small-btn" onclick="toggleTask(this)">Mark Done</button></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Python Programs</td>
+                                    <td>Python</td>
+                                    <td>03 Nov 2026</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td><button class="small-btn" onclick="toggleTask(this)">Mark Done</button></td>
+                                </tr>
+
+                                <tr>
+                                    <td>SQL Queries Practice</td>
+                                    <td>DBMS</td>
+                                    <td>01 Nov 2026</td>
+                                    <td><span class="status overdue">Due Soon</span></td>
+                                    <td><button class="small-btn" onclick="toggleTask(this)">Mark Done</button></td>
+                                </tr>
+
+                                <tr>
+                                    <td>SDLC Report</td>
+                                    <td>Software Engineering</td>
+                                    <td>30 Oct 2026</td>
+                                    <td><span class="status completed">Completed</span></td>
+                                    <td><button class="small-btn" disabled>Completed</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p id="noResults" class="empty-message" hidden>No matching assignments found.</p>
+                </div>
+            </section>
+
+            <!-- ATTENDANCE AND ANNOUNCEMENTS -->
+            <div class="two-column">
+
+                <section class="section" id="attendance">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Attendance Overview</h2>
+                            <p>Sample subject-wise attendance</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="attendance-score">
+                            <h3>Overall Attendance</h3>
+                            <strong>85%</strong>
+                        </div>
+
+                        <div class="attendance-row">
+                            <div class="progress-info">
+                                <span>Web Development</span><span>92%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-fill" style="width:92%"></div>
+                            </div>
+                        </div>
+
+                        <div class="attendance-row">
+                            <div class="progress-info">
+                                <span>Python Programming</span><span>88%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-fill" style="width:88%"></div>
+                            </div>
+                        </div>
+
+                        <div class="attendance-row">
+                            <div class="progress-info">
+                                <span>Database Management</span><span>80%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-fill" style="width:80%"></div>
+                            </div>
+                        </div>
+
+                        <div class="attendance-row">
+                            <div class="progress-info">
+                                <span>Software Engineering</span><span>78%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-fill" style="width:78%"></div>
+                            </div>
+                        </div>
+
+                        <div class="note">
+                            Tip: Check your college's minimum attendance requirements regularly.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="announcements">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Announcements</h2>
+                            <p>Important student updates</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="announcement">
+                            <h3>📢 Practical Submission</h3>
+                            <p>Review your practical files and complete pending submissions before the deadline.</p>
+                            <time>Academic reminder</time>
+                        </div>
+
+                        <div class="announcement">
+                            <h3>📅 Internal Assessment</h3>
+                            <p>Prepare your notes and check the official timetable for assessment dates.</p>
+                            <time>Exam preparation</time>
+                        </div>
+
+                        <div class="announcement">
+                            <h3>💡 Skill Development</h3>
+                            <p>Practice coding regularly and add completed projects to your portfolio.</p>
+                            <time>Learning update</time>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PROFILE -->
+            <section class="section" id="profile">
+                <div class="section-heading">
+                    <div>
+                        <h2>Student Profile</h2>
+                        <p>Example academic information — customize these details</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="profile-details">
+                        <div class="detail">
+                            <p>Full Name</p>
+                            <strong>Riya Ranjan</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>BCA2026001</p>
+                            <strong>STU2026001 (Sample)</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>Course</p>
+                            <strong>Bachelor of Computer Applications (BCA)</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>Year / Semester</p>
+                            <strong>Second Year · Semester 3 (Sample)</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>College / University</p>
+                            <strong>School Of Information Technology</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>Email Address</p>
+                            <strong>riyaranjan69@gmail.com</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>Academic Session</p>
+                            <strong>2026–2027</strong>
+                        </div>
+
+                        <div class="detail">
+                            <p>Career Goal</p>
+                            <strong>Software Developer</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <footer>
+            © 2026 StudentHub · Student Dashboard Demo · Built with HTML, CSS & JavaScript
+        </footer>
+    </main>
+</div>
+
+<script>
+    // Show the current date automatically
+    const today = new Date();
+
+    document.getElementById("currentDate").textContent =
+        today.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+
+    // Mark an assignment as completed
+    function toggleTask(button) {
+        const row = button.closest("tr");
+        const status = row.querySelector(".status");
+
+        if (status.classList.contains("completed")) {
+            return;
+        }
+
+        status.textContent = "Completed";
+        status.className = "status completed";
+
+        button.textContent = "Completed";
+        button.disabled = true;
+
+        updatePendingCount();
+    }
+
+    // Update pending assignments count
+    function updatePendingCount() {
+        const statuses = document.querySelectorAll(
+            "#assignmentTable tbody .status"
+        );
+
+        let pending = 0;
+
+        statuses.forEach(function(status) {
+            if (!status.classList.contains("completed")) {
+                pending++;
+            }
+        });
+
+        document.getElementById("pendingCount").textContent = pending;
+    }
+
+    // Search and filter assignments
+    document.getElementById("searchInput").addEventListener(
+        "input",
+        function() {
+            const query = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll(
+                "#assignmentTable tbody tr"
+            );
+
+            let visibleRows = 0;
+
+            rows.forEach(function(row) {
+                const matches = row.textContent.toLowerCase().includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleRows++;
+                }
+            });
+
+            document.getElementById("noResults").hidden = visibleRows !== 0;
+        }
+    );
+
+    // Highlight the selected sidebar section
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(function(link) {
+        link.addEventListener("click", function() {
+            navLinks.forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            this.classList.add("active");
+        });
+    });
+
+    updatePendingCount();
+</script>
+
+</body>
+</html>
